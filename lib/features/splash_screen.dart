@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:vcc_remake_bloc/core/constant.dart';
+import 'package:vcc_remake_bloc/core/utils/secure_storage_util.dart';
+import 'package:vcc_remake_bloc/features/index_page.dart';
 
 import 'auth/login/presentation/pages/login_page.dart';
+import 'auth/home_pages.dart';
 
 
 class SplashScreen extends StatefulWidget {
@@ -12,22 +16,37 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+
   @override
   void initState() {
-    // TODO: implement initState
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      // Future.delayed(
-      //     const Duration(seconds: 3),
-      // () => context.goNamed(RouterEnum.bloc));
-      // context.read<LoginBloc>().add(CheckIsLoginEvent());
-      Future.delayed(const Duration(seconds: 3),
-              () => Navigator.of(context).pushReplacement(
-            MaterialPageRoute(
-              builder: (context) => const LoginPage(),
-            ),
-          ));
-    });
+    print("isi dari ini ${Constant.APP_TOKEN}");
+    _checkAuth();
     super.initState();
+  }
+
+  Future<void> _checkAuth() async {
+    final token = await UserStorageWrapper()
+        .getField(Constant.APP_TOKEN);
+
+    print("isi dari ini $token");
+    print("isi dari ini $token");
+
+    // optional delay biar splash kelihatan dikit
+    await Future.delayed(const Duration(seconds: 2));
+
+    if (!mounted) return;
+
+    if (token == null || token.isEmpty) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => const LoginPage()),
+      );
+    } else {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => const IndexPage()),
+      );
+    }
   }
 
   @override

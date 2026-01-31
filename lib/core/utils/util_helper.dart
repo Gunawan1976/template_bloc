@@ -8,6 +8,9 @@ import '../constant.dart';
 import 'hex_color.dart';
 
 class UtilsHelper {
+  static GlobalKey<NavigatorState> navigatorKey =
+  GlobalKey<NavigatorState>();
+
   static String getContentType(String fileName) {
     String extension = fileName.split('.').last.toLowerCase();
     switch (extension) {

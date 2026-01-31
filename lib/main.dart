@@ -1,41 +1,85 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:vcc_remake_bloc/features/auth/captcha/presentation/bloc/captcha_bloc.dart';
+import 'package:vcc_remake_bloc/core/utils/util_helper.dart';
 import 'package:vcc_remake_bloc/features/auth/login/presentation/bloc/login_bloc.dart';
 import 'package:vcc_remake_bloc/features/splash_screen.dart';
 
 import 'core/network/injection.dart';
-import 'features/auth/login/presentation/pages/login_page.dart';
-
+import 'core/network/token_cache.dart';
+import 'core/utils/secure_storage_util.dart';
+import 'features/index/index_cubit.dart';
+import 'features/root/root_bloc.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  const String key = String.fromEnvironment('KEY', defaultValue: 'dev-key');
+  const String iv = String.fromEnvironment('IV', defaultValue: 'dev-iv');
+
+  await UserSecureStorage.setField("sec_key", key);
+  await UserSecureStorage.setField("iv", iv);
+  await TokenCache.init();
+
   await setupLocator();
 
-  runApp(const MyApp());
+  runApp(
+    MultiBlocProvider(
+      providers: [
+        BlocProvider<LoginBloc>(create: (context) => locator()),
+        BlocProvider(create: (_) => RootBloc()..add(StartGlobalTimer())),
+        BlocProvider<IndexCubit>(create: (context) => IndexCubit()),
+        // BlocProvider<CaptchaBloc>(create: (context) => locator(),)
+      ],
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(providers: [
-      BlocProvider<LoginBloc>(create: (context) => locator(),),
-      BlocProvider<CaptchaBloc>(create: (context) => locator(),)
-    ], child: ScreenUtilInit(
+    return BlocListener<RootBloc, RootState>(
+      listenWhen: (prev, curr) =>
+      prev.showFiveMinutesDialog != curr.showFiveMinutesDialog,
+      listener: (context, state) {
+        if (state.showFiveMinutesDialog) {
+          final navContext = UtilsHelper.navigatorKey.currentContext;
+
+          if (navContext == null) return;
+
+          // prevent dialog stack
+          if (UtilsHelper.navigatorKey.currentState!.canPop()) return;
+
+          showDialog(
+            context: navContext,
+            builder: (_) => AlertDialog(
+              title: const Text("Reminder"),
+              content: const Text("Sudah 5 menit berlalu"),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(navContext),
+                  child: const Text("OK"),
+                ),
+              ],
+            ),
+          );
+        }
+      },
+      child: ScreenUtilInit(
         designSize: const Size(360, 690),
         minTextAdapt: true,
         splitScreenMode: true,
-        child:  MaterialApp(
+        child: MaterialApp(
+          navigatorKey: UtilsHelper.navigatorKey,
           title: 'Flutter Demo',
           theme: ThemeData(
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           ),
-          home: const LoginPage(),
-        )
-    ));
+          home: const SplashScreen(),
+        ),
+      ),
+    );
   }
 }

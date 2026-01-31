@@ -8,7 +8,7 @@ class TokenCache {
 
   // Inisialisasi token dari secure storage saat aplikasi mulai
   static Future<void> init() async {
-    csrfToken = await UserSecureStorage.getField(Constant.CSRF_TOKEN);
+    // csrfToken = await UserSecureStorage.getField(Constant.CSRF_TOKEN);
     csrfTokenLogin = await UserSecureStorage.getField(Constant.CSRF_TOKEN_LOGIN);
     responseToken = await UserSecureStorage.getField(Constant.RESPONSE_CSRF_TOKEN);
   }

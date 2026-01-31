@@ -1,36 +1,38 @@
-// lib/Login/bloc/Login_state.dart
-part of 'login_bloc.dart'; // Akan terhubung dengan Login_bloc.dart
+part of 'login_bloc.dart';
 
-// Kelas dasar (abstract) untuk semua state
-abstract class LoginState extends Equatable {
-  const LoginState();
+enum LoginStatus { initial, loading, success, failure }
 
-  @override
-  List<Object> get props => [];
-}
-
-// 1. State Awal
-class LoginInitial extends LoginState {}
-
-// 2. State Loading (saat proses login)
-class LoginLoading extends LoginState {}
-
-// 3. State Sukses (membawa data user)
-class LoginSuccess extends LoginState {
-  final DataState<LoginEntities> dataState; // Contoh data user
-
-  const LoginSuccess({required this.dataState});
-
-  @override
-  List<Object> get props => [dataState];
-}
-
-// 4. State Gagal (membawa pesan error)
-class LoginFailure extends LoginState {
+class LoginState extends Equatable {
+  final LoginStatus status;
+  final bool isPasswordObscured;
+  final LoginEntities? user;
+  final ProfileEntities? profile;
   final String error;
 
-  const LoginFailure({required this.error});
+  const LoginState({
+    this.status = LoginStatus.initial,
+    this.isPasswordObscured = true,
+    this.user,
+    this.error = '',
+    this.profile,
+  });
+
+  LoginState copyWith({
+    LoginStatus? status,
+    bool? isPasswordObscured,
+    LoginEntities? user,
+    ProfileEntities? profile,
+    String? error,
+  }) {
+    return LoginState(
+      status: status ?? this.status,
+      isPasswordObscured: isPasswordObscured ?? this.isPasswordObscured,
+      user: user ?? this.user,
+      profile: profile ?? this.profile,
+      error: error ?? this.error,
+    );
+  }
 
   @override
-  List<Object> get props => [error];
+  List<Object?> get props => [status, isPasswordObscured, user, error, profile];
 }

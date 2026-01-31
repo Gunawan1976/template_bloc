@@ -6,9 +6,9 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import '../../features/auth/login/domain/entities/login_entities.dart';
 
 class UserStorageWrapper{
-  // Future<void> deleteAllField() async {
-  //   return await UserSecureStorage.deleteAllField();
-  // }
+  Future<void> deleteAllField() async {
+    return await UserSecureStorage.deleteAllField();
+  }
 
   Future<void> deleteField(String value) async {
     return await UserSecureStorage.deleteField(value);
@@ -22,14 +22,14 @@ class UserStorageWrapper{
     return await UserSecureStorage.getField(key);
   }
 
-  Future<void> saveUser(UserEntities? user,key) async {
-    await UserSecureStorage.saveUser(key:key,user: user);
-  }
-
-  Future<UserEntities> getUser(String key) async {
-    UserEntities user = await UserSecureStorage.getUser(key) ?? UserEntities();
-    return user;
-  }
+  // Future<void> saveUser(UserEntities? user,key) async {
+  //   await UserSecureStorage.saveUser(key:key,user: user);
+  // }
+  //
+  // Future<UserEntities> getUser(String key) async {
+  //   UserEntities user = await UserSecureStorage.getUser(key) ?? UserEntities();
+  //   return user;
+  // }
 }
 
 class UserSecureStorage {
@@ -43,19 +43,19 @@ class UserSecureStorage {
     await _storage.write(key: key, value: value);
   }
 
-  static Future<void> saveUser({UserEntities? user,required String key}) async {
-    final userJson = jsonEncode(user?.toJson());
-    await _storage.write(key: key, value: userJson);
-  }
-
-  static Future<UserEntities?> getUser(String key) async {
-    final String? userJson = await _storage.read(key: key);
-    if (userJson != null) {
-      final Map<String, dynamic> userMap = jsonDecode(userJson);
-      return UserEntities.fromJson(userMap);
-    }
-    return null;
-  }
+  // static Future<void> saveUser({UserEntities? user,required String key}) async {
+  //   final userJson = jsonEncode(user?.toJson());
+  //   await _storage.write(key: key, value: userJson);
+  // }
+  //
+  // static Future<UserEntities?> getUser(String key) async {
+  //   final String? userJson = await _storage.read(key: key);
+  //   if (userJson != null) {
+  //     final Map<String, dynamic> userMap = jsonDecode(userJson);
+  //     return UserEntities.fromJson(userMap);
+  //   }
+  //   return null;
+  // }
 
   static Future<void> clearUser(String key) async {
     await _storage.delete(key: key);
@@ -74,9 +74,9 @@ class UserSecureStorage {
     }
   }
 
-  // static Future<void> deleteAllField() async {
-  //   return await _storage.deleteAll();
-  // }
+  static Future<void> deleteAllField() async {
+    return await _storage.deleteAll();
+  }
 
   static Future<void> deleteField(String key) async {
     return await _storage.delete(key: key);

@@ -6,7 +6,7 @@ class Constant {
   static const APP_TITLE='Virtual Command Center';
   static const String APP_STATE_KEY = 'APP_STATE';
   static const String APP_TOKEN = 'token';
-  static const String CSRF_TOKEN = 'csrf_token';
+  static const String REFRESH_TOKEN = 'refresh_token';
   static const String RESPONSE_CSRF_TOKEN = 'csrf_token';
   static const String CSRF_TOKEN_LOGIN = 'csrf_token_login';
   static const String DATA_USER = 'data_user';
@@ -25,11 +25,11 @@ class Constant {
   // static const String HOST_URL_PLNMOBILE = 'stg-new-vcc-plnmobile.pln.co.id';
 
   //BASE URL PROD
-  static const String BASE_URL = 'https://new-vcc-be.pln.co.id/vcc/';
-  static const String BASE_URL_PLNMOBILE = 'https://new-vcc-plnmobile.pln.co.id/plnmobile/';
-  static const String CERT_SHA256_FINGERPRINT = "1C:F4:BE:7F:99:44:81:87:CD:EE:0E:E6:09:08:97:91:FD:AC:BB:AB:F6:61:6F:40:B5:DC:32:63:52:CD:B7:4D";
-  static const String HOST_URL = 'new-vcc-be.pln.co.id';
-  static const String HOST_URL_PLNMOBILE = 'new-vcc-plnmobile.pln.co.id';
+  static const String BASE_URL = 'https://dummyjson.com/';
+  // static const String BASE_URL_PLNMOBILE = 'https://new-vcc-plnmobile.pln.co.id/plnmobile/';
+  // static const String CERT_SHA256_FINGERPRINT = "1C:F4:BE:7F:99:44:81:87:CD:EE:0E:E6:09:08:97:91:FD:AC:BB:AB:F6:61:6F:40:B5:DC:32:63:52:CD:B7:4D";
+  // static const String HOST_URL = 'new-vcc-be.pln.co.id';
+  // static const String HOST_URL_PLNMOBILE = 'new-vcc-plnmobile.pln.co.id';
 
   // static const String BASE_URL = 'http://172.16.1.99:5000/vcc/';
   // static const String BASE_URL_PLNMOBILE = 'http://172.16.1.99:5001/plnmobile/';
