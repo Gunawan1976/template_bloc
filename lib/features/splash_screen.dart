@@ -5,7 +5,7 @@ import 'package:vcc_remake_bloc/core/utils/secure_storage_util.dart';
 import 'package:vcc_remake_bloc/features/index_page.dart';
 
 import 'auth/login/presentation/pages/login_page.dart';
-import 'auth/home_pages.dart';
+import 'home_page/presentation/pages/home_pages.dart';
 
 
 class SplashScreen extends StatefulWidget {

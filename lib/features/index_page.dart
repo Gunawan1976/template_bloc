@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:vcc_remake_bloc/features/auth/home_pages.dart';
+import 'package:vcc_remake_bloc/features/home_page/presentation/pages/home_pages.dart';
 import 'package:vcc_remake_bloc/features/auth/profile_page.dart';
 import 'package:vcc_remake_bloc/features/search/presentation/pages/search_page.dart';
 

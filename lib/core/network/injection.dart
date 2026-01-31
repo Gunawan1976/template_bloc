@@ -8,6 +8,11 @@ import 'package:vcc_remake_bloc/features/auth/login/data/implements/login_reposi
 import 'package:vcc_remake_bloc/features/auth/login/data/sources/login_api_services.dart';
 import 'package:vcc_remake_bloc/features/auth/login/domain/usecases/login_usecases.dart';
 import 'package:vcc_remake_bloc/features/auth/login/domain/usecases/profile_usecase.dart';
+import 'package:vcc_remake_bloc/features/home_page/data/implements/home_repository_implements.dart';
+import 'package:vcc_remake_bloc/features/home_page/data/sources/home_api_services.dart';
+import 'package:vcc_remake_bloc/features/home_page/domain/repositories/home_repositories.dart';
+import 'package:vcc_remake_bloc/features/home_page/domain/use_cases/produk_usecase.dart';
+import 'package:vcc_remake_bloc/features/home_page/presentation/home/home_bloc.dart';
 import '../../features/auth/login/domain/repositories/login_repositories.dart';
 import '../../features/auth/login/presentation/bloc/login_bloc.dart';
 import '../constant.dart';
@@ -74,9 +79,27 @@ Future<void> setupDependencies() async {
         () => GetProfileUseCase(locator<LoginRepository>()),
   );
 
-
   // Presentation
   locator.registerFactory<LoginBloc>(
         () => LoginBloc(loginUseCase: locator<LoginUseCase>(), getProfileUseCase: locator<GetProfileUseCase>()),
+  );
+
+  ///GetProduk
+  locator.registerLazySingleton<HomeApiServices>(
+        () => HomeApiServiceImpl(locator<Dio>()), // Pastikan ServiceImpl mengambil Dio
+  );
+
+  locator.registerLazySingleton<HomeRepository>(
+        () => HomeRepositoryImp(homeApiServices:  locator<HomeApiServices>()),
+  );
+
+  // Domain
+  locator.registerLazySingleton(
+        () => GetProdukUseCase(locator<HomeRepository>()),
+  );
+
+  // Presentation
+  locator.registerFactory<HomeBloc>(
+        () => HomeBloc(getProdukUseCase: locator<GetProdukUseCase>()),
   );
 }

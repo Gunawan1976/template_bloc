@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:vcc_remake_bloc/core/enum.dart';
 
 import 'package:vcc_remake_bloc/features/auth/login/presentation/bloc/login_bloc.dart';
 import 'package:vcc_remake_bloc/features/index_page.dart';
@@ -67,7 +68,7 @@ class _LoginPageState extends State<LoginPage> {
       // 1. Gunakan BlocConsumer untuk LOGIN BLOC sebagai state utama halaman
       body: BlocConsumer<LoginBloc, LoginState>(
         listener: (context, state) {
-          if (state.status == LoginStatus.failure) {
+          if (state.status == LoadingState.failure) {
             // Tampilkan SnackBar jika login GAGAL
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
@@ -78,7 +79,7 @@ class _LoginPageState extends State<LoginPage> {
             // Muat ulang captcha setelah login gagal
             // context.read<CaptchaBloc>().add(FetchCaptcha());
           }
-          else if (state.status == LoginStatus.success) {
+          else if (state.status == LoadingState.success) {
             // Navigasi ke HomePage jika login BERHASIL
             Navigator.of(context).pushReplacement(
               MaterialPageRoute(
@@ -89,7 +90,7 @@ class _LoginPageState extends State<LoginPage> {
         },
         builder: (context, state) {
           // Jika state login adalah loading, tampilkan loading di tengah
-          if (state.status == LoginStatus.loading) {
+          if (state.status == LoadingState.loading) {
             return const Center(child: CircularProgressIndicator());
           }
 

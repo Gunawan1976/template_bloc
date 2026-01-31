@@ -5,6 +5,7 @@ import 'package:vcc_remake_bloc/core/constant.dart';
 import 'package:vcc_remake_bloc/core/utils/secure_storage_util.dart';
 import 'package:vcc_remake_bloc/features/auth/login/domain/entities/profile_entities.dart';
 import '../../../../../core/data_state.dart';
+import '../../../../../core/enum.dart';
 import '../../domain/entities/login_entities.dart';
 import '../../domain/usecases/login_usecases.dart';
 import '../../domain/usecases/profile_usecase.dart';
@@ -45,7 +46,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       LoginButtonPressed event,
       Emitter<LoginState> emit,
       ) async {
-    emit(state.copyWith(status: LoginStatus.loading));
+    emit(state.copyWith(status: LoadingState.loading));
 
     final result = await loginUseCase.loginRepository.login(id: event.id,
         password: event.password,
@@ -63,12 +64,12 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           .setField(Constant.REFRESH_TOKEN, user.refreshToken);
 
       emit(state.copyWith(
-        status: LoginStatus.success,
+        status: LoadingState.success,
         user: user,
       ));
     } else if (result is DataFailed<LoginEntities>) {
       emit(state.copyWith(
-        status: LoginStatus.failure,
+        status: LoadingState.failure,
         error: result.error,
       ));
     }
@@ -80,17 +81,17 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       ) async {
     if (state.profile != null) return;
 
-    emit(state.copyWith(status: LoginStatus.loading));
+    emit(state.copyWith(status: LoadingState.loading));
 
     await getProfileUseCase().then((value) {
       if (value is DataSuccess<ProfileEntities>) {
         emit(state.copyWith(
-          status: LoginStatus.success,
+          status: LoadingState.success,
           profile: value.data,
         ));
       } else if (value is DataFailed<ProfileEntities>) {
         emit(state.copyWith(
-          status: LoginStatus.failure,
+          status: LoadingState.failure,
           error: value.error,
         ));
       }

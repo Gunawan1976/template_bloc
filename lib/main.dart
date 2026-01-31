@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:vcc_remake_bloc/core/utils/util_helper.dart';
 import 'package:vcc_remake_bloc/features/auth/login/presentation/bloc/login_bloc.dart';
+import 'package:vcc_remake_bloc/features/home_page/presentation/home/home_bloc.dart';
 import 'package:vcc_remake_bloc/features/splash_screen.dart';
 
 import 'core/network/injection.dart';
@@ -26,8 +27,10 @@ Future<void> main() async {
     MultiBlocProvider(
       providers: [
         BlocProvider<LoginBloc>(create: (context) => locator()),
+        BlocProvider<HomeBloc>(create:(context) => locator(), ),
         BlocProvider(create: (_) => RootBloc()..add(StartGlobalTimer())),
         BlocProvider<IndexCubit>(create: (context) => IndexCubit()),
+
         // BlocProvider<CaptchaBloc>(create: (context) => locator(),)
       ],
       child: MyApp(),

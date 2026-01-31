@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:vcc_remake_bloc/core/enum.dart';
 
 import '../../shared/widget/custom_text_widget.dart';
 import 'login/presentation/bloc/login_bloc.dart';
@@ -30,7 +31,7 @@ class _ProfilePageState extends State<ProfilePage> {
         centerTitle: true,
       ),
       body: BlocBuilder<LoginBloc, LoginState>(builder: (context, state) {
-        if (state.status == LoginStatus.loading) {
+        if (state.status == LoadingState.loading) {
           return Center(child: const CircularProgressIndicator());
         }
         if (state.profile != null) {

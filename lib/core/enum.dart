@@ -1,15 +1,9 @@
 
 //enum loading
-enum LoadingState{
-  getData,
-  loading,
-  success,
-  empty,
-  nan
-}
 
 enum NavbarItem { home,search, profile }
 
+enum LoadingState { initial, loading, success, failure }
 
 //enum snackbar
 enum SnackBarType{
