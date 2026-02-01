@@ -8,6 +8,10 @@ import 'package:vcc_remake_bloc/features/auth/login/data/implements/login_reposi
 import 'package:vcc_remake_bloc/features/auth/login/data/sources/login_api_services.dart';
 import 'package:vcc_remake_bloc/features/auth/login/domain/usecases/login_usecases.dart';
 import 'package:vcc_remake_bloc/features/auth/login/domain/usecases/profile_usecase.dart';
+import 'package:vcc_remake_bloc/features/detail_produk/data/implements/single_produk_repository_implements.dart';
+import 'package:vcc_remake_bloc/features/detail_produk/data/sources/single_produk_api_services.dart';
+import 'package:vcc_remake_bloc/features/detail_produk/domain/repositories/single_produk_repositories.dart';
+import 'package:vcc_remake_bloc/features/detail_produk/presentation/bloc/single_produk_bloc.dart';
 import 'package:vcc_remake_bloc/features/home_page/data/implements/home_repository_implements.dart';
 import 'package:vcc_remake_bloc/features/home_page/data/sources/home_api_services.dart';
 import 'package:vcc_remake_bloc/features/home_page/domain/repositories/home_repositories.dart';
@@ -15,6 +19,7 @@ import 'package:vcc_remake_bloc/features/home_page/domain/use_cases/produk_useca
 import 'package:vcc_remake_bloc/features/home_page/presentation/home/home_bloc.dart';
 import '../../features/auth/login/domain/repositories/login_repositories.dart';
 import '../../features/auth/login/presentation/bloc/login_bloc.dart';
+import '../../features/detail_produk/domain/use_cases/single_produk_usecase.dart';
 import '../constant.dart';
 import 'logging_interceptor.dart';
 
@@ -101,5 +106,24 @@ Future<void> setupDependencies() async {
   // Presentation
   locator.registerFactory<HomeBloc>(
         () => HomeBloc(getProdukUseCase: locator<GetProdukUseCase>()),
+  );
+
+  ///GetSingleProduk
+  locator.registerLazySingleton<SingleProdukApiServices>(
+        () => SingleProdukApiServiceImpl(locator<Dio>()), // Pastikan ServiceImpl mengambil Dio
+  );
+
+  locator.registerLazySingleton<SingleProdukRepository>(
+        () => SingleProdukRepositoryImpl(singleProdukApiServices: locator<SingleProdukApiServices>()),
+  );
+
+  // Domain
+  locator.registerLazySingleton(
+        () => GetSingleGetProdukUseCase(locator<SingleProdukRepository>()),
+  );
+
+  // Presentation
+  locator.registerFactory<SingleProdukBloc>(
+        () => SingleProdukBloc(getSingleGetProdukUseCase: locator<GetSingleGetProdukUseCase>()),
   );
 }

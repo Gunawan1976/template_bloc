@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:vcc_remake_bloc/core/utils/util_helper.dart';
 import 'package:vcc_remake_bloc/features/auth/login/presentation/bloc/login_bloc.dart';
+import 'package:vcc_remake_bloc/features/detail_produk/presentation/bloc/single_produk_bloc.dart';
 import 'package:vcc_remake_bloc/features/home_page/presentation/home/home_bloc.dart';
 import 'package:vcc_remake_bloc/features/splash_screen.dart';
 import 'package:vcc_remake_bloc/shared/widget/custom_text_widget.dart';
@@ -29,6 +30,7 @@ Future<void> main() async {
       providers: [
         BlocProvider<LoginBloc>(create: (context) => locator()),
         BlocProvider<HomeBloc>(create: (context) => locator()),
+        BlocProvider<SingleProdukBloc>(create: (context) => locator(),),
         BlocProvider(
           create: (_) {
             final bloc = RootBloc()..add(StartGlobalTimer());

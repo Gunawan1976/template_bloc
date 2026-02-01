@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:vcc_remake_bloc/features/detail_produk/presentation/pages/single_produk_page.dart';
 import 'package:vcc_remake_bloc/features/home_page/presentation/home/home_bloc.dart';
 import 'package:vcc_remake_bloc/shared/widget/custom_text_widget.dart';
 
@@ -72,6 +73,13 @@ class _HomePagesState extends State<HomePages> {
                   return Padding(
                     padding: EdgeInsets.symmetric(vertical: 4.h),
                     child: ListTile(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => SingleProdukPage(id: state.listProduk?[index].id ?? 0,), // Kirim data user
+                          ),
+                        );
+                      },
                       contentPadding: EdgeInsetsGeometry.all(8),
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                       tileColor: Colors.grey.shade200,
