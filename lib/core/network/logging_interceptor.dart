@@ -124,10 +124,6 @@ class LoggingInterceptors extends Interceptor {
   }
 
   Future<void> clearUserSession() async {
-    await UserSecureStorage.deleteField(Constant.levelUser);
-    await UserSecureStorage.deleteField(Constant.unitCode);
-    await UserSecureStorage.deleteField(Constant.RESPONSE_CSRF_TOKEN);
-    await UserSecureStorage.deleteField(Constant.CSRF_TOKEN_LOGIN);
-    await UserSecureStorage.deleteField(Constant.DATA_USER);
+    await UserSecureStorage.deleteAllField();
   }
 }

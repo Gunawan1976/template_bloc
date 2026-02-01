@@ -24,21 +24,17 @@ class HomeApiServiceImpl extends HomeApiServices {
     String? sortBy,
     String? order,
   })async {
-    try {
-      Map<String, dynamic> queryParams = {
-        "limit": limit,
-        "skip":skip,
-        "sortBy":sortBy,
-        "order":order,
-      };
-      queryParams.removeWhere((key, value) => value == null || value == '');
-      return await dio.get(
+    Map<String, dynamic> queryParams = {
+      "limit": limit,
+      "skip":skip,
+      "sortBy":sortBy,
+      "order":order,
+    };
+    queryParams.removeWhere((key, value) => value == null || value == '');
+    return await dio.get(
         "products",
         queryParameters:queryParams).then((value) async {
-            return ProdukModel.fromJson(value.data);
-          });
-    } on DioException catch (e) {
-      return ProdukModel();
-    }
+      return ProdukModel.fromJson(value.data);
+    });
   }
 }

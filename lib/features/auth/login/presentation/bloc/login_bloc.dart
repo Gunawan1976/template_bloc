@@ -48,7 +48,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       ) async {
     emit(state.copyWith(status: LoadingState.loading));
 
-    final result = await loginUseCase.loginRepository.login(id: event.id,
+    final result = await loginUseCase.login(id: event.id,
         password: event.password,
         captcha: "",
         captchaId: "",

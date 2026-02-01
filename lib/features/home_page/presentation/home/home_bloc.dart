@@ -24,7 +24,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       )async{
 
     if (state.hasReachedMax) return;
-    // if (state.produk != null) return;
+
     if (state.status == LoadingState.loading) return;
 
     if (state.page == 1) {
