@@ -35,6 +35,11 @@ class _HomePagesState extends State<HomePages> {
         if (state.status == LoadingState.loading) {
           return Center(child: const CircularProgressIndicator());
         }
+
+        if (state.listProduk == null || state.listProduk!.isEmpty) {
+          return const Center(child: Text("No produk data"));
+        }
+
         if(state.produk != null){
           return Padding(
             padding: EdgeInsets.symmetric(horizontal: 8.w),
@@ -49,14 +54,6 @@ class _HomePagesState extends State<HomePages> {
                   if (notification.metrics.pixels ==
                       notification.metrics.maxScrollExtent &&
                       notification.metrics.axis == Axis.vertical) {
-                    // if (absensiController.meta.value.totalPage! ==
-                    //     absensiController.currentPage.value) {} else {
-                    //   absensiController.currentPage.value++;
-                    //   absensiController.getAbsensiList(
-                    //       status: selectedStatus,
-                    //       area: DateFormat("yyyy-MM").format(
-                    //           selectedDate));
-                    // }
                     if(state.page == state.produk!.total){
 
                     }else{
@@ -67,9 +64,27 @@ class _HomePagesState extends State<HomePages> {
                 return true;
               },
               child:  ListView.builder(
-                itemCount: state.listProduk?.length,
+                itemCount: state.listProduk!.length + 1,
                 shrinkWrap: true,
                 itemBuilder: (context, index) {
+                  if (index == state.listProduk!.length) {
+                    if (state.hasReachedMax) {
+                      return Padding(
+                        padding: EdgeInsets.symmetric(vertical: 16.h),
+                        child: const Center(
+                          child: Text("No more data"),
+                        ),
+                      );
+                    } else {
+                      return Padding(
+                        padding: EdgeInsets.symmetric(vertical: 16.h),
+                        child: Center(
+                          child: TextView(text: "Loading..."),
+                        ),
+                      );
+                    }
+                  }
+
                   return Padding(
                     padding: EdgeInsets.symmetric(vertical: 4.h),
                     child: ListTile(

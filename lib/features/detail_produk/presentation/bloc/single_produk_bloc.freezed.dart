@@ -14,61 +14,30 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$SingleProdukEvent {
 
- String get id;
-/// Create a copy of SingleProdukEvent
-/// with the given fields replaced by the non-null parameter values.
-@JsonKey(includeFromJson: false, includeToJson: false)
-@pragma('vm:prefer-inline')
-$SingleProdukEventCopyWith<SingleProdukEvent> get copyWith => _$SingleProdukEventCopyWithImpl<SingleProdukEvent>(this as SingleProdukEvent, _$identity);
+
 
 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is SingleProdukEvent&&(identical(other.id, id) || other.id == id));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is SingleProdukEvent);
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id);
+int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'SingleProdukEvent(id: $id)';
+  return 'SingleProdukEvent()';
 }
 
 
 }
 
 /// @nodoc
-abstract mixin class $SingleProdukEventCopyWith<$Res>  {
-  factory $SingleProdukEventCopyWith(SingleProdukEvent value, $Res Function(SingleProdukEvent) _then) = _$SingleProdukEventCopyWithImpl;
-@useResult
-$Res call({
- String id
-});
-
-
-
-
-}
-/// @nodoc
-class _$SingleProdukEventCopyWithImpl<$Res>
-    implements $SingleProdukEventCopyWith<$Res> {
-  _$SingleProdukEventCopyWithImpl(this._self, this._then);
-
-  final SingleProdukEvent _self;
-  final $Res Function(SingleProdukEvent) _then;
-
-/// Create a copy of SingleProdukEvent
-/// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,}) {
-  return _then(_self.copyWith(
-id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String,
-  ));
-}
-
+class $SingleProdukEventCopyWith<$Res>  {
+$SingleProdukEventCopyWith(SingleProdukEvent _, $Res Function(SingleProdukEvent) __);
 }
 
 
@@ -86,11 +55,13 @@ extension SingleProdukEventPatterns on SingleProdukEvent {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _Fetch value)?  fetch,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _Fetch value)?  fetch,TResult Function( _Increment value)?  increment,TResult Function( _Decrement value)?  decrement,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case _Fetch() when fetch != null:
-return fetch(_that);case _:
+return fetch(_that);case _Increment() when increment != null:
+return increment(_that);case _Decrement() when decrement != null:
+return decrement(_that);case _:
   return orElse();
 
 }
@@ -108,11 +79,13 @@ return fetch(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _Fetch value)  fetch,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _Fetch value)  fetch,required TResult Function( _Increment value)  increment,required TResult Function( _Decrement value)  decrement,}){
 final _that = this;
 switch (_that) {
 case _Fetch():
-return fetch(_that);case _:
+return fetch(_that);case _Increment():
+return increment(_that);case _Decrement():
+return decrement(_that);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -129,11 +102,13 @@ return fetch(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _Fetch value)?  fetch,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _Fetch value)?  fetch,TResult? Function( _Increment value)?  increment,TResult? Function( _Decrement value)?  decrement,}){
 final _that = this;
 switch (_that) {
 case _Fetch() when fetch != null:
-return fetch(_that);case _:
+return fetch(_that);case _Increment() when increment != null:
+return increment(_that);case _Decrement() when decrement != null:
+return decrement(_that);case _:
   return null;
 
 }
@@ -150,10 +125,12 @@ return fetch(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( String id)?  fetch,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( String id)?  fetch,TResult Function()?  increment,TResult Function()?  decrement,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Fetch() when fetch != null:
-return fetch(_that.id);case _:
+return fetch(_that.id);case _Increment() when increment != null:
+return increment();case _Decrement() when decrement != null:
+return decrement();case _:
   return orElse();
 
 }
@@ -171,10 +148,12 @@ return fetch(_that.id);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( String id)  fetch,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( String id)  fetch,required TResult Function()  increment,required TResult Function()  decrement,}) {final _that = this;
 switch (_that) {
 case _Fetch():
-return fetch(_that.id);case _:
+return fetch(_that.id);case _Increment():
+return increment();case _Decrement():
+return decrement();case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -191,10 +170,12 @@ return fetch(_that.id);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( String id)?  fetch,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( String id)?  fetch,TResult? Function()?  increment,TResult? Function()?  decrement,}) {final _that = this;
 switch (_that) {
 case _Fetch() when fetch != null:
-return fetch(_that.id);case _:
+return fetch(_that.id);case _Increment() when increment != null:
+return increment();case _Decrement() when decrement != null:
+return decrement();case _:
   return null;
 
 }
@@ -209,11 +190,11 @@ class _Fetch implements SingleProdukEvent {
   const _Fetch({required this.id});
   
 
-@override final  String id;
+ final  String id;
 
 /// Create a copy of SingleProdukEvent
 /// with the given fields replaced by the non-null parameter values.
-@override @JsonKey(includeFromJson: false, includeToJson: false)
+@JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
 _$FetchCopyWith<_Fetch> get copyWith => __$FetchCopyWithImpl<_Fetch>(this, _$identity);
 
@@ -239,7 +220,7 @@ String toString() {
 /// @nodoc
 abstract mixin class _$FetchCopyWith<$Res> implements $SingleProdukEventCopyWith<$Res> {
   factory _$FetchCopyWith(_Fetch value, $Res Function(_Fetch) _then) = __$FetchCopyWithImpl;
-@override @useResult
+@useResult
 $Res call({
  String id
 });
@@ -258,7 +239,7 @@ class __$FetchCopyWithImpl<$Res>
 
 /// Create a copy of SingleProdukEvent
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,}) {
+@pragma('vm:prefer-inline') $Res call({Object? id = null,}) {
   return _then(_Fetch(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,
@@ -267,6 +248,70 @@ as String,
 
 
 }
+
+/// @nodoc
+
+
+class _Increment implements SingleProdukEvent {
+  const _Increment();
+  
+
+
+
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Increment);
+}
+
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'SingleProdukEvent.increment()';
+}
+
+
+}
+
+
+
+
+/// @nodoc
+
+
+class _Decrement implements SingleProdukEvent {
+  const _Decrement();
+  
+
+
+
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Decrement);
+}
+
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'SingleProdukEvent.decrement()';
+}
+
+
+}
+
+
+
 
 /// @nodoc
 mixin _$SingleProdukState {
@@ -385,12 +430,12 @@ return error(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function( SingleProductEntities data)?  success,TResult Function( String message)?  error,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function( SingleProductEntities data,  int counter)?  success,TResult Function( String message)?  error,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Initial() when initial != null:
 return initial();case _Loading() when loading != null:
 return loading();case _Success() when success != null:
-return success(_that.data);case _Error() when error != null:
+return success(_that.data,_that.counter);case _Error() when error != null:
 return error(_that.message);case _:
   return orElse();
 
@@ -409,12 +454,12 @@ return error(_that.message);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function( SingleProductEntities data)  success,required TResult Function( String message)  error,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function( SingleProductEntities data,  int counter)  success,required TResult Function( String message)  error,}) {final _that = this;
 switch (_that) {
 case _Initial():
 return initial();case _Loading():
 return loading();case _Success():
-return success(_that.data);case _Error():
+return success(_that.data,_that.counter);case _Error():
 return error(_that.message);case _:
   throw StateError('Unexpected subclass');
 
@@ -432,12 +477,12 @@ return error(_that.message);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function( SingleProductEntities data)?  success,TResult? Function( String message)?  error,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function( SingleProductEntities data,  int counter)?  success,TResult? Function( String message)?  error,}) {final _that = this;
 switch (_that) {
 case _Initial() when initial != null:
 return initial();case _Loading() when loading != null:
 return loading();case _Success() when success != null:
-return success(_that.data);case _Error() when error != null:
+return success(_that.data,_that.counter);case _Error() when error != null:
 return error(_that.message);case _:
   return null;
 
@@ -514,10 +559,11 @@ String toString() {
 
 
 class _Success implements SingleProdukState {
-  const _Success({required this.data});
+  const _Success({required this.data, this.counter = 0});
   
 
  final  SingleProductEntities data;
+@JsonKey() final  int counter;
 
 /// Create a copy of SingleProdukState
 /// with the given fields replaced by the non-null parameter values.
@@ -529,16 +575,16 @@ _$SuccessCopyWith<_Success> get copyWith => __$SuccessCopyWithImpl<_Success>(thi
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Success&&(identical(other.data, data) || other.data == data));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Success&&(identical(other.data, data) || other.data == data)&&(identical(other.counter, counter) || other.counter == counter));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,data);
+int get hashCode => Object.hash(runtimeType,data,counter);
 
 @override
 String toString() {
-  return 'SingleProdukState.success(data: $data)';
+  return 'SingleProdukState.success(data: $data, counter: $counter)';
 }
 
 
@@ -549,7 +595,7 @@ abstract mixin class _$SuccessCopyWith<$Res> implements $SingleProdukStateCopyWi
   factory _$SuccessCopyWith(_Success value, $Res Function(_Success) _then) = __$SuccessCopyWithImpl;
 @useResult
 $Res call({
- SingleProductEntities data
+ SingleProductEntities data, int counter
 });
 
 
@@ -566,10 +612,11 @@ class __$SuccessCopyWithImpl<$Res>
 
 /// Create a copy of SingleProdukState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? data = null,}) {
+@pragma('vm:prefer-inline') $Res call({Object? data = null,Object? counter = null,}) {
   return _then(_Success(
 data: null == data ? _self.data : data // ignore: cast_nullable_to_non_nullable
-as SingleProductEntities,
+as SingleProductEntities,counter: null == counter ? _self.counter : counter // ignore: cast_nullable_to_non_nullable
+as int,
   ));
 }
 

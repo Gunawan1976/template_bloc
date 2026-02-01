@@ -8,7 +8,12 @@ class SingleProdukState with _$SingleProdukState {
 
   const factory SingleProdukState.success({
     required SingleProductEntities data,
+    @Default(0) int counter,
   }) = _Success;
 
   const factory SingleProdukState.error(String message) = _Error;
+
+  // const factory SingleProdukState.counter({
+  //   @Default(0) int value,
+  // }) = _CounterProduk;
 }

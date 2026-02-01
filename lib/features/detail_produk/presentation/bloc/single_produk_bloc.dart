@@ -15,30 +15,64 @@ class SingleProdukBloc extends Bloc<SingleProdukEvent, SingleProdukState> {
   SingleProdukBloc({required this.getSingleGetProdukUseCase})
       : super(const SingleProdukState.initial()) {
     on<_Fetch>(_onFetch);
+    on<_Increment>(_onIncrement);
+    on<_Decrement>(_onDecrement);
   }
 
   Future<void> _onFetch(
       _Fetch event,
       Emitter<SingleProdukState> emit,
       ) async {
-    // emit(const SingleProdukState.loading());
-    //
-    // try {
-    //   final data = await getSingleGetProdukUseCase.call(id: event.id);
-    //   emit(SingleProdukState.success(
-    //     data: data.data ?? SingleProductEntities(),
-    //   ));
-    // } catch (e) {
-    //   emit(SingleProdukState.error(e.toString()));
-    // }
-    await event.when(
-      fetch: (id) async {
-        emit(const SingleProdukState.loading());
-        final data = await getSingleGetProdukUseCase.call(id: id);
+    emit(const SingleProdukState.loading());
+
+    try {
+      final data = await getSingleGetProdukUseCase.call(id: event.id);
+      emit(SingleProdukState.success(
+        data: data.data ?? SingleProductEntities(),
+      ));
+    } catch (e) {
+      emit(SingleProdukState.error(e.toString()));
+    }
+    // await event.when(
+    //   fetch: (id) async {
+    //     emit(const SingleProdukState.loading());
+    //     final data = await getSingleGetProdukUseCase.call(id: id);
+    //     emit(SingleProdukState.success(
+    //       data: data.data ?? SingleProductEntities(),
+    //     ));
+    //   },
+    // );
+  }
+
+  void _onIncrement(
+      _Increment event,
+      Emitter<SingleProdukState> emit,
+      ) {
+    state.maybeWhen(
+      success: (data, counter) {
         emit(SingleProdukState.success(
-          data: data.data ?? SingleProductEntities(),
+          data: data,
+          counter: counter + 1,
         ));
       },
+      orElse: () {},
+    );
+  }
+
+  void _onDecrement(
+      _Decrement event,
+      Emitter<SingleProdukState> emit,
+      ) {
+    state.maybeWhen(
+      success: (data, counter) {
+        if (counter > 0) {
+          emit(SingleProdukState.success(
+            data: data,
+            counter: counter - 1,
+          ));
+        }
+      },
+      orElse: () {},
     );
   }
 }
