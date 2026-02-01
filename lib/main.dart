@@ -5,6 +5,7 @@ import 'package:vcc_remake_bloc/core/utils/util_helper.dart';
 import 'package:vcc_remake_bloc/features/auth/login/presentation/bloc/login_bloc.dart';
 import 'package:vcc_remake_bloc/features/home_page/presentation/home/home_bloc.dart';
 import 'package:vcc_remake_bloc/features/splash_screen.dart';
+import 'package:vcc_remake_bloc/shared/widget/custom_text_widget.dart';
 
 import 'core/network/injection.dart';
 import 'core/network/token_cache.dart';
@@ -27,10 +28,15 @@ Future<void> main() async {
     MultiBlocProvider(
       providers: [
         BlocProvider<LoginBloc>(create: (context) => locator()),
-        BlocProvider<HomeBloc>(create:(context) => locator(), ),
-        BlocProvider(create: (_) => RootBloc()..add(StartGlobalTimer())),
+        BlocProvider<HomeBloc>(create: (context) => locator()),
+        BlocProvider(
+          create: (_) {
+            final bloc = RootBloc()..add(StartGlobalTimer());
+            UtilsHelper.rootBloc = bloc;
+            return bloc;
+          },
+        ),
         BlocProvider<IndexCubit>(create: (context) => IndexCubit()),
-
         // BlocProvider<CaptchaBloc>(create: (context) => locator(),)
       ],
       child: MyApp(),
@@ -43,40 +49,61 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<RootBloc, RootState>(
-      listenWhen: (prev, curr) =>
-      prev.showFiveMinutesDialog != curr.showFiveMinutesDialog,
-      listener: (context, state) {
-        if (state.showFiveMinutesDialog) {
-          final navContext = UtilsHelper.navigatorKey.currentContext;
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<RootBloc, RootState>(
+          listenWhen: (prev, curr) =>
+              prev.showFiveMinutesDialog != curr.showFiveMinutesDialog,
+          listener: (context, state) {
+            if (state.showFiveMinutesDialog) {
+              final navContext = UtilsHelper.navigatorKey.currentContext;
 
-          if (navContext == null) return;
+              if (navContext == null) return;
 
-          // prevent dialog stack
-          if (UtilsHelper.navigatorKey.currentState!.canPop()) return;
+              // prevent dialog stack
+              if (UtilsHelper.navigatorKey.currentState!.canPop()) return;
 
-          showDialog(
-            context: navContext,
-            builder: (_) => AlertDialog(
-              title: const Text("Reminder"),
-              content: const Text("Sudah 5 menit berlalu"),
-              actions: [
-                TextButton(
-                  onPressed: () => Navigator.pop(navContext),
-                  child: const Text("OK"),
+              showDialog(
+                context: navContext,
+                builder: (_) => AlertDialog(
+                  title: const Text("Reminder"),
+                  content: const Text("Sudah 5 menit berlalu"),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.pop(navContext),
+                      child: const Text("OK"),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          );
-        }
-      },
+              );
+            }
+          },
+        ),
+
+        /// GLOBAL SNACKBAR
+        BlocListener<RootBloc, RootState>(
+          listenWhen: (prev, curr) => prev.snackbarId != curr.snackbarId,
+          listener: (context, state) {
+            UtilsHelper.scaffoldMessengerKey.currentState!
+              ..hideCurrentSnackBar()
+              ..showSnackBar(
+                SnackBar(
+                  content: TextView(text: state.snackbarMessage ?? "",textColor: Colors.white,),
+                  behavior: SnackBarBehavior.floating,
+                  backgroundColor: Colors.red,
+                ),
+              );
+          },
+        ),
+      ],
       child: ScreenUtilInit(
         designSize: const Size(360, 690),
         minTextAdapt: true,
         splitScreenMode: true,
         child: MaterialApp(
           navigatorKey: UtilsHelper.navigatorKey,
-          title: 'Flutter Demo',
+          scaffoldMessengerKey: UtilsHelper.scaffoldMessengerKey,
+          title: 'Tempalte Bloc',
           theme: ThemeData(
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           ),

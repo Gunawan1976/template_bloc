@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
+import '../../features/root/root_bloc.dart';
 import '../constant.dart';
 import '../utils/secure_storage_util.dart';
 import '../utils/util_helper.dart';
@@ -38,6 +39,10 @@ class LoggingInterceptors extends Interceptor {
         !_isRefreshingToken) {
       _isRefreshingToken = true;
 
+      UtilsHelper.rootBloc.add(
+        ShowSnackBarEvent("Session expired, silakan login ulang"),
+      );
+
       try {
         final success = await _refreshToken();
 
@@ -57,11 +62,28 @@ class LoggingInterceptors extends Interceptor {
           return handler.reject(err);
         }
       } catch (e) {
+        UtilsHelper.rootBloc.add(
+          ShowSnackBarEvent("Terjadi kesalahan autentikasi"),
+        );
         _isRefreshingToken = false;
         await clearUserSession();
         return handler.reject(err);
       }
     }
+    else if (statusCode == 500) {
+      UtilsHelper.rootBloc.add(
+        ShowSnackBarEvent("Server error, coba lagi nanti"),
+      );
+    } else if (err.type == DioExceptionType.connectionTimeout ||
+        err.type == DioExceptionType.unknown) {
+      UtilsHelper.rootBloc.add(
+        ShowSnackBarEvent("Tidak ada koneksi internet"),
+      );
+    }else{
+      UtilsHelper.rootBloc.add(
+          ShowSnackBarEvent(err.response?.statusMessage ??""),);
+    }
+
     super.onError(err, handler);
   }
 

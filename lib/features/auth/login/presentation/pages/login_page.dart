@@ -70,12 +70,12 @@ class _LoginPageState extends State<LoginPage> {
         listener: (context, state) {
           if (state.status == LoadingState.failure) {
             // Tampilkan SnackBar jika login GAGAL
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: TextView(text:state.error,textColor: Colors.white,),
-                backgroundColor: Colors.red,
-              ),
-            );
+            // ScaffoldMessenger.of(context).showSnackBar(
+            //   SnackBar(
+            //     content: TextView(text:state.error,textColor: Colors.white,),
+            //     backgroundColor: Colors.red,
+            //   ),
+            // );
             // Muat ulang captcha setelah login gagal
             // context.read<CaptchaBloc>().add(FetchCaptcha());
           }

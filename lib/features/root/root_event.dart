@@ -12,3 +12,9 @@ class StartGlobalTimer extends RootEvent {}
 class TickEvent extends RootEvent {}
 
 class FiveMinutesPassed extends RootEvent {}
+
+class ShowSnackBarEvent extends RootEvent {
+  final String message;
+  const ShowSnackBarEvent(this.message);
+}
+

@@ -14,6 +14,16 @@ class RootBloc extends Bloc<RootEvent, RootState> {
     on<StartGlobalTimer>(_onStartTimer);
     on<TickEvent>(_onTick);
     on<FiveMinutesPassed>(_onFiveMinutesPassed);
+    on<ShowSnackBarEvent>((event, emit) {
+      emit(
+        state.copyWith(
+          snackbarMessage: event.message,
+          snackbarId: DateTime.now().millisecondsSinceEpoch,
+        ),
+      );
+    });
+
+
   }
 
   void _onStartTimer(StartGlobalTimer event, Emitter<RootState> emit) {
