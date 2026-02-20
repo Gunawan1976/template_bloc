@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vcc_remake_bloc/core/constant.dart';
 import 'package:vcc_remake_bloc/core/utils/secure_storage_util.dart';
 import 'package:vcc_remake_bloc/features/index_page.dart';
@@ -36,17 +35,18 @@ class _SplashScreenState extends State<SplashScreen> {
 
     if (!mounted) return;
 
-    if (token == null || token.isEmpty) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (_) => const LoginPage()),
-      );
-    } else {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (_) => const IndexPage()),
-      );
-    }
+    // if (token == null || token.isEmpty) {
+    //   Navigator.pushReplacement(
+    //     context,
+    //     MaterialPageRoute(builder: (_) => const LoginPage()),
+    //   );
+    // } else {
+    //   Navigator.pushReplacement(
+    //     context,
+    //     MaterialPageRoute(builder: (_) => const IndexPage()),
+    //   );
+    // }
+    MaterialPageRoute(builder: (_) => const LoginPage());
   }
 
   @override
