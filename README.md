@@ -1,4 +1,4 @@
-# vcc_remake_bloc
+# Template for state management with clean architecture
 
 A new Flutter project.
 
