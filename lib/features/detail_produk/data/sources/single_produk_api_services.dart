@@ -11,7 +11,7 @@ abstract class SingleProdukApiServices {
 class SingleProdukApiServiceImpl extends SingleProdukApiServices {
   Dio dio;
 
-  SingleProdukApiServiceImpl([Dio? dio]) : dio = dio ?? locator<Dio>();
+  SingleProdukApiServiceImpl(this.dio);
 
   @override
   Future<SingleProduct> getSingleProduk({required String id})async {

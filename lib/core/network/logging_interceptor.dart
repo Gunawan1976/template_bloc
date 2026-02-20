@@ -1,18 +1,21 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:vcc_remake_bloc/features/auth/login/presentation/providers/login_notifier.dart';
 
 import '../constant.dart';
-import '../utils/secure_storage_util.dart';
+import '../utils/storage/secure_storage_util.dart';
 import '../utils/util_helper.dart';
 
 class LoggingInterceptors extends Interceptor {
   final Dio dio;
+  final Ref ref;
 
   bool _isRefreshingToken = false;
 
   LoggingInterceptors({
     required this.dio,
+    required this.ref,
   });
 
   @override
@@ -32,15 +35,10 @@ class LoggingInterceptors extends Interceptor {
   void onError(DioException err, ErrorInterceptorHandler handler) async {
     final statusCode = err.response?.statusCode ?? 0;
 
-    // ===== HANDLE 401 =====
     if (statusCode == 401 &&
         err.requestOptions.extra['retry'] != true &&
         !_isRefreshingToken) {
       _isRefreshingToken = true;
-
-      // UtilsHelper.rootBloc.add(
-        // ShowSnackBarEvent("Session expired, silakan login ulang"),
-      // );
 
       try {
         final success = await _refreshToken();
@@ -48,51 +46,38 @@ class LoggingInterceptors extends Interceptor {
         _isRefreshingToken = false;
 
         if (success) {
-          final newToken = await UserStorageWrapper().getField(Constant.APP_TOKEN);
+          final newToken =
+          await UserStorageWrapper().getField(Constant.APP_TOKEN);
 
-          err.requestOptions.headers['Authorization'] = 'Bearer $newToken';
+          err.requestOptions.headers['Authorization'] =
+          'Bearer $newToken';
           err.requestOptions.extra['retry'] = true;
 
           final response = await _retry(err.requestOptions);
 
           return handler.resolve(response);
         } else {
-          await clearUserSession();
+          await _forceLogout();
           return handler.reject(err);
         }
       } catch (e) {
-        // UtilsHelper.rootBloc.add(
-          // ShowSnackBarEvent("Terjadi kesalahan autentikasi"),
-        // );
         _isRefreshingToken = false;
-        await clearUserSession();
+        await _forceLogout();
         return handler.reject(err);
       }
     }
-    else if (statusCode == 500) {
-      // UtilsHelper.rootBloc.add(
-      //   ShowSnackBarEvent("Server error, coba lagi nanti"),
-      // );
-    } else if (err.type == DioExceptionType.connectionTimeout ||
-        err.type == DioExceptionType.unknown) {
-      // UtilsHelper.rootBloc.add(
-        // ShowSnackBarEvent("Tidak ada koneksi internet"),
-      // );
-    }else{
-      // UtilsHelper.rootBloc.add(
-          // ShowSnackBarEvent(err.response?.statusMessage ??""),
-        // );
-    }
 
-    super.onError(err, handler);
+    return super.onError(err, handler);
   }
 
-  @override
-  void onResponse(Response response, ResponseInterceptorHandler handler) {
-    super.onResponse(response, handler);
-  }
+  // ================= HELPERS =================
 
-  // ================== HELPERS ==================
+  Future<void> _forceLogout() async {
+    await clearUserSession();
+
+    /// 🔥 trigger riverpod auth state
+    // ref.read(loginNotifierProvider.notifier).logout();
+  }
 
   Future<bool> _refreshToken() async {
     try {
@@ -120,7 +105,8 @@ class LoggingInterceptors extends Interceptor {
       if (accessToken == null || newRefreshToken == null) return false;
 
       await UserSecureStorage.setField(Constant.APP_TOKEN, accessToken);
-      await UserSecureStorage.setField(Constant.REFRESH_TOKEN, newRefreshToken);
+      await UserSecureStorage.setField(
+          Constant.REFRESH_TOKEN, newRefreshToken);
 
       return true;
     } catch (e) {

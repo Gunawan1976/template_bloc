@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-import '../../features/auth/login/domain/entities/login_entities.dart';
+import '../../../features/auth/login/domain/entities/login_entities.dart';
 
 class UserStorageWrapper{
   Future<void> deleteAllField() async {

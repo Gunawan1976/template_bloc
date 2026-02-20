@@ -4,7 +4,7 @@ import 'package:cryptography/cryptography.dart' as cryptography;
 // import 'package:pointycastle/api.dart';
 // import 'package:pointycastle/block/aes.dart';
 // import 'package:pointycastle/block/modes/gcm.dart';
-import 'package:vcc_remake_bloc/core/utils/secure_storage_util.dart';
+import 'package:vcc_remake_bloc/core/utils/storage/secure_storage_util.dart';
 import 'package:vcc_remake_bloc/core/utils/util_helper.dart';
 final nonce = List<int>.filled(12, 0);
 

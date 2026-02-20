@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:vcc_remake_bloc/core/utils/util_helper.dart';
-import 'package:vcc_remake_bloc/features/splash_screen.dart';
-import 'package:vcc_remake_bloc/shared/widget/custom_text_widget.dart';
 
-import 'core/network/injection.dart';
+import 'core/router/router.dart';
+import 'core/utils/util_helper.dart';
 import 'core/network/token_cache.dart';
-import 'core/utils/secure_storage_util.dart';
+import 'core/utils/storage/secure_storage_util.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   const String key = String.fromEnvironment('KEY', defaultValue: 'dev-key');
   const String iv = String.fromEnvironment('IV', defaultValue: 'dev-iv');
 
@@ -17,29 +17,31 @@ Future<void> main() async {
   await UserSecureStorage.setField("iv", iv);
   await TokenCache.init();
 
-  await setupLocator();
-
-  runApp(MyApp()
+  runApp(
+    const ProviderScope(
+      child: MyApp(),
+    ),
   );
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends ConsumerWidget {
   const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final router = ref.watch(goRouterProvider);
+
     return ScreenUtilInit(
       designSize: const Size(360, 690),
       minTextAdapt: true,
       splitScreenMode: true,
-      child: MaterialApp(
-        navigatorKey: UtilsHelper.navigatorKey,
+      child: MaterialApp.router(
+        routerConfig: router,
         scaffoldMessengerKey: UtilsHelper.scaffoldMessengerKey,
-        title: 'Tempalte Bloc',
+        title: 'Template Riverpod',
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         ),
-        home: const SplashScreen(),
       ),
     );
   }

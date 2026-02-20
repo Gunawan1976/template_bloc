@@ -15,7 +15,7 @@ abstract class HomeApiServices {
 class HomeApiServiceImpl extends HomeApiServices {
   Dio dio;
 
-  HomeApiServiceImpl([Dio? dio]) : dio = dio ?? locator<Dio>();
+  HomeApiServiceImpl(this.dio);
 
   @override
   Future<ProdukModel> getProduk({

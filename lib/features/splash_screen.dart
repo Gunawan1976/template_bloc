@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:vcc_remake_bloc/core/constant.dart';
-import 'package:vcc_remake_bloc/core/utils/secure_storage_util.dart';
+import 'package:vcc_remake_bloc/core/utils/storage/secure_storage_util.dart';
 import 'package:vcc_remake_bloc/features/index_page.dart';
 
 import 'auth/login/presentation/pages/login_page.dart';
@@ -18,8 +18,13 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   void initState() {
-    print("isi dari ini ${Constant.APP_TOKEN}");
-    _checkAuth();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => const LoginPage()),
+      );
+    });
+    // _checkAuth();
     super.initState();
   }
 
@@ -46,7 +51,6 @@ class _SplashScreenState extends State<SplashScreen> {
     //     MaterialPageRoute(builder: (_) => const IndexPage()),
     //   );
     // }
-    MaterialPageRoute(builder: (_) => const LoginPage());
   }
 
   @override

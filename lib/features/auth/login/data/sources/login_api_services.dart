@@ -21,7 +21,7 @@ abstract class LoginApiServices {
 class LoginApiServiceImpl extends LoginApiServices{
   Dio dio;
 
-  LoginApiServiceImpl([Dio? dio]) : dio = dio ?? locator<Dio>();
+  LoginApiServiceImpl(this.dio);
 
   @override
   Future<LoginModel> login({required String id, required String password, required String captcha, required String captchaId, required String csrfToken}) async{
