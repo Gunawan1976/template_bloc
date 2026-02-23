@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:vcc_remake_bloc/features/auth/login/presentation/providers/login_notifier.dart';
 
+import '../../features/auth/login/presentation/providers/login_state.dart';
 import '../constant.dart';
 import '../utils/storage/secure_storage_util.dart';
 import '../utils/util_helper.dart';
@@ -39,6 +40,7 @@ class LoggingInterceptors extends Interceptor {
         err.requestOptions.extra['retry'] != true &&
         !_isRefreshingToken) {
       _isRefreshingToken = true;
+      await ref.read(authSessionProvider.notifier).logout();
 
       try {
         final success = await _refreshToken();

@@ -29,7 +29,7 @@ class MyApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final router = ref.watch(goRouterProvider);
+    final router = ref.read(goRouterProvider);
 
     return ScreenUtilInit(
       designSize: const Size(360, 690),

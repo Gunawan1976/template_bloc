@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../domain/entities/login_entities.dart';
 import '../../../../../core/data_state.dart';
 import 'login_provider.dart';
+import 'login_state.dart';
 
 final loginNotifierProvider =
 AsyncNotifierProvider<LoginNotifier, DataState<LoginEntities>>(
@@ -27,7 +28,7 @@ class LoginNotifier extends AsyncNotifier<DataState<LoginEntities>> {
   }) async {
     state = const AsyncLoading();
 
-    state = await AsyncValue.guard(() async {
+    final result = await AsyncValue.guard(() async {
       return await ref.read(loginUseCaseProvider).loginRepository.login(
         id: id,
         password: password,
@@ -36,9 +37,18 @@ class LoginNotifier extends AsyncNotifier<DataState<LoginEntities>> {
         csrfToken: csrfToken,
       );
     });
+
+    state = result;
+
+    if (result.value is DataSuccess<LoginEntities>) {
+      final token = (result.value as DataSuccess<LoginEntities>).data?.accessToken;
+      await ref.read(authSessionProvider.notifier).setLogin(token!);
+    }
   }
 
   Future<void> logout() async {
+    await ref.read(authSessionProvider.notifier).logout();
+
     state = AsyncData(const DataFailed("Logged out"));
   }
 
