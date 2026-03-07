@@ -26,10 +26,6 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: TextView(text: "Profile Pages",fontWeight: FontWeight.w600,),
-        centerTitle: true,
-      ),
       body: BlocBuilder<LoginBloc, LoginState>(builder: (context, state) {
         if (state.status == LoadingState.loading) {
           return Center(child: const CircularProgressIndicator());

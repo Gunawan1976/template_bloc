@@ -1,4 +1,6 @@
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -27,6 +29,7 @@ class _HomePagesState extends State<HomePages> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.grey.shade200,
         title: TextView(text: "Home Pages",fontWeight: FontWeight.w600,),
         centerTitle: true,
 
@@ -35,35 +38,33 @@ class _HomePagesState extends State<HomePages> {
         if (state.status == LoadingState.loading) {
           return Center(child: const CircularProgressIndicator());
         }
-
         if (state.listProduk == null || state.listProduk!.isEmpty) {
           return const Center(child: Text("No produk data"));
         }
-
         if(state.produk != null){
-          return Padding(
-            padding: EdgeInsets.symmetric(horizontal: 8.w),
-            child: NotificationListener<ScrollNotification>(
-              onNotification: (notification) {
-                if (notification is ScrollEndNotification) {
-                  if (notification.metrics.pixels == 0 &&
-                      notification.metrics.axis == Axis.vertical) {
-                    // Disable aksi ketika mencapai scroll paling atas
-                    return true; // Menonaktifkan notifikasi lebih lanjut
-                  }
-                  if (notification.metrics.pixels ==
-                      notification.metrics.maxScrollExtent &&
-                      notification.metrics.axis == Axis.vertical) {
-                    if(state.page == state.produk!.total){
+          return NotificationListener<ScrollNotification>(
+            onNotification: (notification) {
+              if (notification is ScrollEndNotification) {
+                if (notification.metrics.pixels == 0 &&
+                    notification.metrics.axis == Axis.vertical) {
+                  // Disable aksi ketika mencapai scroll paling atas
+                  return true; // Menonaktifkan notifikasi lebih lanjut
+                }
+                if (notification.metrics.pixels ==
+                    notification.metrics.maxScrollExtent &&
+                    notification.metrics.axis == Axis.vertical) {
+                  if(state.page == state.produk!.total){
 
-                    }else{
-                      context.read<HomeBloc>().add(GetProduk());
-                    }
+                  }else{
+                    context.read<HomeBloc>().add(GetProduk());
                   }
                 }
-                return true;
-              },
-              child:  ListView.builder(
+              }
+              return true;
+            },
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 8.w),
+              child: ListView.builder(
                 itemCount: state.listProduk!.length + 1,
                 shrinkWrap: true,
                 itemBuilder: (context, index) {
@@ -115,7 +116,7 @@ class _HomePagesState extends State<HomePages> {
                     ),
                   );
                 },),
-            )
+            ),
           );
         }
         return const Text("No produk data");

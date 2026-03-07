@@ -12,8 +12,4 @@ class SingleProdukState with _$SingleProdukState {
   }) = _Success;
 
   const factory SingleProdukState.error(String message) = _Error;
-
-  // const factory SingleProdukState.counter({
-  //   @Default(0) int value,
-  // }) = _CounterProduk;
 }

@@ -18,7 +18,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final LoginUseCase loginUseCase;
   final GetProfileUseCase getProfileUseCase;
 
-
   LoginBloc({required this.loginUseCase,required this.getProfileUseCase}) : super(const LoginState()) {
     on<LoginButtonPressed>(_onLoginButtonPressed);
     on<TogglePasswordVisibility>(_onTogglePasswordVisibility);

@@ -7,6 +7,7 @@ class EditText extends StatelessWidget {
   final TextEditingController? customController;
   final String? titleTextField;
   final String? hintTextField;
+  final double? hintTextSize;
   final String? errorText;
   final int? maxLength;
   final bool? readOnly;
@@ -50,7 +51,7 @@ class EditText extends StatelessWidget {
         this.maxLines,
         this.suffixIcon,
         this.customSuffix = false,
-        this.isTahun = false, this.prefixIcon, this.borderRadius, this.borderSideColor, this.fillColor, this.onFieldSubmitted, this.expand});
+        this.isTahun = false, this.prefixIcon, this.borderRadius, this.borderSideColor, this.fillColor, this.onFieldSubmitted, this.expand, this.hintTextSize});
 
   @override
   Widget build(BuildContext context) {
@@ -82,25 +83,25 @@ class EditText extends StatelessWidget {
         hintText: hintTextField,
         hintStyle: TextStyle(
           color: Colors.grey,
-          fontSize: 13.sp,
+          fontSize: hintTextSize?.sp ??13.sp,
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.all(
-            Radius.circular(borderRadius ?? 6),
+            Radius.circular(borderRadius?.r ?? 6.r),
           ),
           borderSide:
           BorderSide(width: 1, color: borderSideColor ?? Colors.grey), //<-- SEE HERE
         ),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.all(
-            Radius.circular(borderRadius ?? 6),
+            Radius.circular(borderRadius?.r ?? 6.r),
           ),
           borderSide:
           BorderSide(width: 1, color:borderSideColor ??  Colors.grey), //<-- SEE HERE
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.all(
-            Radius.circular(borderRadius ?? 6),
+            Radius.circular(borderRadius?.r ?? 6.r),
           ),
           borderSide:
           BorderSide(width: 1, color:borderSideColor ?? Colors.grey), //<-- SEE HERE
