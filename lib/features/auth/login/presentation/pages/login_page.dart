@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:vcc_remake_bloc/core/enum.dart';
 
 import 'package:vcc_remake_bloc/features/auth/login/presentation/bloc/login_bloc.dart';
-import 'package:vcc_remake_bloc/features/index_page.dart';
 
 // Import widget kustom Anda
 import 'package:vcc_remake_bloc/shared/widget/custom_text_widget.dart';
@@ -27,14 +27,11 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   void initState() {
-    // Tidak perlu memanggil BlocProvider.of() di sini.
-    // context.read<CaptchaBloc>().add(FetchCaptcha());
     super.initState();
   }
 
   @override
   void dispose() {
-    // 5. WAJIB dispose semua controller
     usernameController.dispose();
     passwordController.dispose();
     masukanCaptchaController.dispose();
@@ -44,7 +41,6 @@ class _LoginPageState extends State<LoginPage> {
   // Helper untuk memicu event login
   void _onLoginPressed() {
     context.read<LoginBloc>().add(
-      // Ganti dengan event login Anda yang sebenarnya
       LoginButtonPressed(
         id: usernameController.text,
         password: passwordController.text,
@@ -65,36 +61,21 @@ class _LoginPageState extends State<LoginPage> {
         ),
         backgroundColor: Colors.blue,
       ),
-      // 1. Gunakan BlocConsumer untuk LOGIN BLOC sebagai state utama halaman
       body: BlocConsumer<LoginBloc, LoginState>(
         listener: (context, state) {
           if (state.status == LoadingState.failure) {
-            // Tampilkan SnackBar jika login GAGAL
-            // ScaffoldMessenger.of(context).showSnackBar(
-            //   SnackBar(
-            //     content: TextView(text:state.error,textColor: Colors.white,),
-            //     backgroundColor: Colors.red,
-            //   ),
-            // );
-            // Muat ulang captcha setelah login gagal
-            // context.read<CaptchaBloc>().add(FetchCaptcha());
+            // Handle failure
           }
           else if (state.status == LoadingState.success) {
-            // Navigasi ke HomePage jika login BERHASIL
-            Navigator.of(context).pushReplacement(
-              MaterialPageRoute(
-                builder: (context) => IndexPage(), // Kirim data user
-              ),
-            );
+            // Navigasi ke IndexPage jika login BERHASIL menggunakan go_router
+            context.go('/index');
           }
         },
         builder: (context, state) {
-          // Jika state login adalah loading, tampilkan loading di tengah
           if (state.status == LoadingState.loading) {
             return const Center(child: CircularProgressIndicator());
           }
 
-          // Jika tidak, tampilkan form login
           return Center(
             child: SingleChildScrollView(
               child: Center(
@@ -123,7 +104,6 @@ class _LoginPageState extends State<LoginPage> {
                             style: const TextStyle(color: Colors.black),
                             decoration: InputDecoration(
                               border: const OutlineInputBorder(),
-                              // 6. Hint teks diperbaiki
                               hintText: 'Masukan Password',
                               suffixIcon: InkWell(
                                 onTap: () {
@@ -139,7 +119,6 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           ),
                           SizedBox(height: 32.h),
-                          // 3. Tombol Login DITAMBAHKAN
                           SizedBox(
                             width: double.infinity,
                             child: ElevatedButton(
@@ -166,23 +145,6 @@ class _LoginPageState extends State<LoginPage> {
           );
         },
       ),
-    );
-  }
-
-  // Widget helper untuk menampilkan error captcha
-  Widget _buildCaptchaError(BuildContext context) {
-    return Column(
-      children: [
-        const Icon(Icons.error_outline, color: Colors.red, size: 40),
-        const Text('Gagal memuat captcha'),
-        TextButton(
-          onPressed: () {
-            // Panggil event untuk fetch ulang captcha
-            // context.read<CaptchaBloc>().add(FetchCaptcha());
-          },
-          child: const Text('Coba Lagi'),
-        )
-      ],
     );
   }
 }

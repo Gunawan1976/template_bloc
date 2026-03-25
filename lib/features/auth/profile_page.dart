@@ -2,11 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:vcc_remake_bloc/core/enum.dart';
 
 import '../../shared/widget/custom_text_widget.dart';
 import 'login/presentation/bloc/login_bloc.dart';
-import 'login/presentation/pages/login_page.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -111,10 +111,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   SizedBox(height: 16.h,),
                   ElevatedButton(onPressed: () {
                     context.read<LoginBloc>().add(LogoutButtonPressed());
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(builder: (_) => const LoginPage()),
-                    );
+                    context.go('/login');
                   },style: ButtonStyle(
                     minimumSize: WidgetStateProperty.all(Size(double.infinity, 50)),
                     backgroundColor: WidgetStateProperty.all(Colors.red),

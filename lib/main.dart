@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
+import 'package:vcc_remake_bloc/core/utils/app_router.dart';
 import 'package:vcc_remake_bloc/core/utils/util_helper.dart';
 import 'package:vcc_remake_bloc/features/auth/login/presentation/bloc/login_bloc.dart';
 import 'package:vcc_remake_bloc/features/detail_produk/presentation/bloc/single_produk_bloc.dart';
 import 'package:vcc_remake_bloc/features/home_page/presentation/home/home_bloc.dart';
-import 'package:vcc_remake_bloc/features/splash_screen.dart';
 import 'package:vcc_remake_bloc/shared/widget/custom_text_widget.dart';
 
 import 'core/network/injection.dart';
@@ -39,9 +40,8 @@ Future<void> main() async {
           },
         ),
         BlocProvider<IndexCubit>(create: (context) => IndexCubit()),
-        // BlocProvider<CaptchaBloc>(create: (context) => locator(),)
       ],
-      child: MyApp(),
+      child: const MyApp(),
     ),
   );
 }
@@ -58,21 +58,21 @@ class MyApp extends StatelessWidget {
               prev.showFiveMinutesDialog != curr.showFiveMinutesDialog,
           listener: (context, state) {
             if (state.showFiveMinutesDialog) {
-              final navContext = UtilsHelper.navigatorKey.currentContext;
+              final navContext = AppRouter.router.configuration.navigatorKey.currentContext;
 
               if (navContext == null) return;
 
               // prevent dialog stack
-              if (UtilsHelper.navigatorKey.currentState!.canPop()) return;
+              if (AppRouter.router.canPop()) return;
 
               showDialog(
                 context: navContext,
-                builder: (_) => AlertDialog(
+                builder: (dialogContext) => AlertDialog(
                   title: const Text("Reminder"),
                   content: const Text("Sudah 5 menit berlalu"),
                   actions: [
                     TextButton(
-                      onPressed: () => Navigator.pop(navContext),
+                      onPressed: () => dialogContext.pop(),
                       child: const Text("OK"),
                     ),
                   ],
@@ -102,14 +102,13 @@ class MyApp extends StatelessWidget {
         designSize: const Size(360, 690),
         minTextAdapt: true,
         splitScreenMode: true,
-        child: MaterialApp(
-          navigatorKey: UtilsHelper.navigatorKey,
+        child: MaterialApp.router(
+          routerConfig: AppRouter.router,
           scaffoldMessengerKey: UtilsHelper.scaffoldMessengerKey,
           title: 'Tempalte Bloc',
           theme: ThemeData(
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           ),
-          home: const SplashScreen(),
         ),
       ),
     );
