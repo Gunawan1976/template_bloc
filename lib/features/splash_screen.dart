@@ -15,7 +15,6 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   void initState() {
-    print("isi dari ini ${Constant.APP_TOKEN}");
     _checkAuth();
     super.initState();
   }
@@ -23,8 +22,6 @@ class _SplashScreenState extends State<SplashScreen> {
   Future<void> _checkAuth() async {
     final token = await UserStorageWrapper()
         .getField(Constant.APP_TOKEN);
-
-    print("isi dari ini $token");
 
     // optional delay biar splash kelihatan dikit
     await Future.delayed(const Duration(seconds: 2));
@@ -34,7 +31,7 @@ class _SplashScreenState extends State<SplashScreen> {
     if (token == null || token.isEmpty) {
       context.go('/login');
     } else {
-      context.go('/index');
+      context.go('/home');
     }
   }
 

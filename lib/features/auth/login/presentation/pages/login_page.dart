@@ -68,7 +68,7 @@ class _LoginPageState extends State<LoginPage> {
           }
           else if (state.status == LoadingState.success) {
             // Navigasi ke IndexPage jika login BERHASIL menggunakan go_router
-            context.go('/index');
+            context.go('/home');
           }
         },
         builder: (context, state) {
